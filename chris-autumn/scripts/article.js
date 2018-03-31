@@ -13,7 +13,7 @@ function Article (rawDataObj) {
 // REVIEWED: Instead of a global `articles = []` array, let's attach this list of all articles directly to the constructor function. Note: it is NOT on the prototype. In JavaScript, functions are themselves objects, which means we can add properties/values to them at any time. In this case, the array relates to ALL of the Article objects, so it does not belong on the prototype, as that would only be relevant to a single instantiated Article.
 Article.all = [];
 
-// COMMENTed: Why isn't this method written as an arrow function?
+// COMMENTED: Why isn't this method written as an arrow function?
 // As a general rule, you cannot use 'this' with arrow functions
 Article.prototype.toHtml = function() {
   let template = Handlebars.compile($('#article-template').text());
@@ -49,27 +49,21 @@ Article.fetchAll = () => {
   if (localStorage.rawData) {
     console.log('Found Local Storage rawData');
     let strRetrieveLocal = localStorage.getItem('rawData');
-    //Article.all = JSON.parse(strRetrieveLocal);
-
     Article.loadAll(JSON.parse(strRetrieveLocal));
     articleView.initIndexPage();
 
   } else {
     $.getJSON(url)
       .then(articles => {
-        // console.log('Articles:', articles.length);
         Article.loadAll(articles);
         let localRawData = JSON.stringify(articles);
         localStorage.setItem('rawData', localRawData);
         articleView.initIndexPage();
-        // articles.forEach(article => {
-        //   // console.log(article);
-        //   Article.all.push(new Article(article));
-        // });
+        
       })
-    // console.log('Article Load All:', Article.all);
+    
   }
 };
 
 Article.fetchAll();
-// articleView.initIndexPage();
+
